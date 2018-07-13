@@ -3,6 +3,7 @@ import { NavController, NavParams, Content } from 'ionic-angular';
 import { RoomPage } from '../room/room';
 import * as firebase from 'Firebase';
 
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -12,9 +13,9 @@ export class HomePage {
 
   @ViewChild(Content) content: Content;
 
-  data = { type:'', nickname:'', message:'' };
+  data = { type:'', nickname:'', message:'' }; // type is data in terms of join or exit from a group.
   chats = [];
-  roomkey:string;
+  roomkey:string; // setting roomkey to be a type of string.
   nickname:string;
   offStatus:boolean = false;
 
@@ -55,6 +56,34 @@ export class HomePage {
   });
   this.data.message = '';
 }
+
+/*
+
+  takePicture(){
+
+  let options = {
+  quality: 80,
+  destinationType: Camera.DestinationType.FILE_URI,
+  sourceType: Camera.PictureSourceType.CAMERA,
+  mediaType: Camera.MediaType.PICTURE,
+  encodingType: Camera.EncodingType.JPEG,
+  cameraDirection: Camera.Direction.BACK,
+  targetWidth: 300,
+  targetHeight: 400
+};
+
+  navCtrl.camera.getPicture(success function, fail function, options);
+
+  success: function(){
+  array of pictures.
+  navctrl.pop();
+}
+
+  fail: function(){
+  respond with error message.
+}
+}
+*/
 
 exitChat() {
   let exitData = firebase.database().ref('chatrooms/'+this.roomkey+'/chats').push();

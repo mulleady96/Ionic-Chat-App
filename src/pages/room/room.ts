@@ -5,7 +5,6 @@ import { HomePage } from '../home/home';
 import * as firebase from 'Firebase';
 
 
-
 @IonicPage()
 @Component({
   selector: 'page-room',
