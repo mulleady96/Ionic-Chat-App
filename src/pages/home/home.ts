@@ -1,6 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, Content } from 'ionic-angular';
 import { RoomPage } from '../room/room';
+import { Camera, CameraOptions } from '@ionic-native/camera';
+import { LocalNotifications } from '@ionic-native/local-notifications';
+
 import * as firebase from 'Firebase';
 
 
@@ -18,8 +21,11 @@ export class HomePage {
   roomkey:string; // setting roomkey to be a type of string.
   nickname:string;
   offStatus:boolean = false;
+  imgSrc: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+  public camera: Camera, public localNotifications: LocalNotifications) {
 
     this.roomkey = this.navParams.get("key") as string;
      this.nickname = this.navParams.get("nickname") as string;
@@ -54,36 +60,38 @@ export class HomePage {
     message:this.data.message,
     sendDate:Date()
   });
+  // Send content of message.
   this.data.message = '';
+  // Send Local Notification
+  this.localNotifications.schedule({
+  id: 1,
+  title: 'Message Successfully Sent',
+  text: 'this.data.message',
+  });
 }
 
-/*
+
 
   takePicture(){
 
-  let options = {
+  const options : CameraOptions = {
   quality: 80,
-  destinationType: Camera.DestinationType.FILE_URI,
-  sourceType: Camera.PictureSourceType.CAMERA,
-  mediaType: Camera.MediaType.PICTURE,
-  encodingType: Camera.EncodingType.JPEG,
-  cameraDirection: Camera.Direction.BACK,
+  destinationType: this.camera.DestinationType.FILE_URI,
+  sourceType: this.camera.PictureSourceType.CAMERA,
+  mediaType: this.camera.MediaType.PICTURE,
+  encodingType: this.camera.EncodingType.JPEG,
+  cameraDirection: this.camera.Direction.BACK,
   targetWidth: 300,
-  targetHeight: 400
+  targetHeight: 400,
+  saveToPhotoAlbum: false
 };
 
-  navCtrl.camera.getPicture(success function, fail function, options);
+  this.camera.getPicture(options).then((imageUri) => {
+    this.imgSrc = 'data:image/jpeg;base64,' + imageUri;
+  });
 
-  success: function(){
-  array of pictures.
-  navctrl.pop();
 }
 
-  fail: function(){
-  respond with error message.
-}
-}
-*/
 
 exitChat() {
   let exitData = firebase.database().ref('chatrooms/'+this.roomkey+'/chats').push();

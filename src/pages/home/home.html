@@ -24,7 +24,9 @@
             <span class="msg-name">Me</span>
             <span class="msg-date">{{chat.sendDate | date:"dd.MM.y"}}</span>
             <p text-wrap>{{chat.message}}</p>
+            <p *ngIf="imgSrc"><img [src]="imgSrc"></p>
           </div>
+
         </div>
         <div class="chat-message" text-left *ngIf="chat.user !== nickname">
           <div class="left-bubble">
@@ -42,6 +44,7 @@
   <ion-grid>
     <ion-row>
       <ion-col col-10>
+        <ion-icon name="camera" (click)="takePicture()"></ion-icon>
         <ion-input type="text" placeholder="Type a message" [(ngModel)]="data.message" name="message"></ion-input>
       </ion-col>
       <ion-col col-2 (click)="sendMessage()">
